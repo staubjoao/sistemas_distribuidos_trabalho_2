@@ -27,4 +27,12 @@ public class ImovelCreateEvent {
     public void setQuery(String query) {
         this.query = query;
     }
+
+    @Override
+    public String toString() {
+        return "ImovelCreateEvent{" +
+                "id=" + id +
+                ", query='" + query + '\'' +
+                '}';
+    }
 }

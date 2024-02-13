@@ -46,21 +46,6 @@ public class ImovelController {
 
         rabbitTemplate.convertAndSend(routingKey, event);
 
-//        String urlWithQuery = urlGeolocalizacao + "?query=" + query;
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        ResponseEntity<GeolocalizacaoDTO> response = restTemplate.getForEntity(urlWithQuery, GeolocalizacaoDTO.class);
-//
-//        GeolocalizacaoDTO geolocalizacao = response.getBody();
-//
-//        if (geolocalizacao != null) {
-//            imovel.setLongitude(geolocalizacao.getLongitude());
-//            imovel.setLatitude(geolocalizacao.getLatitude());
-//        } else {
-//            System.out.println("Erro ao obter geolocalização");
-//        }
-//
         return imovel;
     }
 
