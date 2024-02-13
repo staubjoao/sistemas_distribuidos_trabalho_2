@@ -1,15 +1,15 @@
 package br.uem.arboviroses.controller;
 
-import br.uem.arboviroses.dto.GeolocalizacaoDTO;
 import br.uem.arboviroses.model.*;
+import br.uem.arboviroses.rabbit.ImovelCreateEvent;
 import br.uem.arboviroses.service.impl.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -21,10 +21,13 @@ public class ImovelController {
     @Autowired
     private ImovelServiceImpl service;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     private Imovel post(@RequestBody Imovel imovelDTO) {
-        String urlGeolocalizacao = "http://localhost:8081/api/geolocalizacao";
+        String routingKey = "imoveis.v1.imovel-created";
 
         Imovel imovel = new Imovel();
         imovel.setNumero(imovelDTO.getNumero());
@@ -35,24 +38,30 @@ public class ImovelController {
         imovel.setMunicipio(imovelDTO.getMunicipio());
         imovel.setLocalidade(imovelDTO.getLocalidade());
 
+        imovel = service.salvar(imovel);
+
         String query = getString(imovel);
 
-        String urlWithQuery = urlGeolocalizacao + "?query=" + query;
+        ImovelCreateEvent event = new ImovelCreateEvent(imovel.getId(), query);
 
-        RestTemplate restTemplate = new RestTemplate();
+        rabbitTemplate.convertAndSend(routingKey, event);
 
-        ResponseEntity<GeolocalizacaoDTO> response = restTemplate.getForEntity(urlWithQuery, GeolocalizacaoDTO.class);
-
-        GeolocalizacaoDTO geolocalizacao = response.getBody();
-
-        if (geolocalizacao != null) {
-            imovel.setLongitude(geolocalizacao.getLongitude());
-            imovel.setLatitude(geolocalizacao.getLatitude());
-        } else {
-            System.out.println("Erro ao obter geolocalização");
-        }
-
-        return service.salvar(imovel);
+//        String urlWithQuery = urlGeolocalizacao + "?query=" + query;
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        ResponseEntity<GeolocalizacaoDTO> response = restTemplate.getForEntity(urlWithQuery, GeolocalizacaoDTO.class);
+//
+//        GeolocalizacaoDTO geolocalizacao = response.getBody();
+//
+//        if (geolocalizacao != null) {
+//            imovel.setLongitude(geolocalizacao.getLongitude());
+//            imovel.setLatitude(geolocalizacao.getLatitude());
+//        } else {
+//            System.out.println("Erro ao obter geolocalização");
+//        }
+//
+        return imovel;
     }
 
     @GetMapping

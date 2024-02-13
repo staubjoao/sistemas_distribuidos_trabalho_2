@@ -21,7 +21,7 @@ public class ImovelServiceImpl implements ImovelService {
 
     @Override
     public List<Imovel> getlAll() {
-        return repository.getAll();
+        return repository.findAll();
     }
 
 }
