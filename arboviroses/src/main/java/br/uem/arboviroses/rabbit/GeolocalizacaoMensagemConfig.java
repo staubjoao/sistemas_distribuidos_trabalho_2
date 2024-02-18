@@ -18,9 +18,8 @@ public class GeolocalizacaoMensagemConfig {
 
         Imovel imovel = repository.findById(event.getId()).get();
         System.out.println(imovel.toString());
-        imovel.setLatitude(event.getLat());
-        imovel.setLongitude(event.getLon());
+        String pontoWkt = String.format("POINT(%s %s)", event.getLon(), event.getLat());
 
-        repository.save(imovel);
+        repository.updateImovelById(event.getId(), pontoWkt);
     }
 }

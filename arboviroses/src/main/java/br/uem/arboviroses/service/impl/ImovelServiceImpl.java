@@ -16,7 +16,14 @@ public class ImovelServiceImpl implements ImovelService {
 
     @Override
     public Imovel salvar(Imovel imovel) {
-        return repository.save(imovel);
+        try {
+            repository.saveImovel(imovel.getId(), imovel.getLocalidade(), imovel.getNumero(), imovel.getComplemento(),
+                    imovel.getBairro(), imovel.getLogradouro(), imovel.getTipoImovel(), imovel.getMunicipio());
+            return imovel;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

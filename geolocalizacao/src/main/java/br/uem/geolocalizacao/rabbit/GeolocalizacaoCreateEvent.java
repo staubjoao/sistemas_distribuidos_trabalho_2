@@ -1,24 +1,24 @@
 package br.uem.geolocalizacao.rabbit;
 
 public class GeolocalizacaoCreateEvent {
-    private Integer id;
+    private String id;
     private String lat;
     private String lon;
 
     public GeolocalizacaoCreateEvent() {
     }
 
-    public GeolocalizacaoCreateEvent(Integer id, String lat, String lon) {
+    public GeolocalizacaoCreateEvent(String id, String lat, String lon) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

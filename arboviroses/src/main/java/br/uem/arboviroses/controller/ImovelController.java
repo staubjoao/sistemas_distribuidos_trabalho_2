@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/imovel")
@@ -30,6 +31,7 @@ public class ImovelController {
         String routingKey = "imoveis.v1.imovel-created";
 
         Imovel imovel = new Imovel();
+        imovel.setId(String.valueOf(UUID.randomUUID()));
         imovel.setNumero(imovelDTO.getNumero());
         imovel.setComplemento(imovelDTO.getComplemento());
         imovel.setBairro(imovelDTO.getBairro());
@@ -39,6 +41,10 @@ public class ImovelController {
         imovel.setLocalidade(imovelDTO.getLocalidade());
 
         imovel = service.salvar(imovel);
+
+        if (imovel == null) {
+            return null;
+        }
 
         String query = getString(imovel);
 

@@ -34,8 +34,8 @@ public class ImovelCreatedListener {
         }
 
         if(retorno != null) {
-            eventGeolocalizacao.setLat(retorno.getString("lon"));
-            eventGeolocalizacao.setLon(retorno.getString("lat"));
+            eventGeolocalizacao.setLat(retorno.getString("lat"));
+            eventGeolocalizacao.setLon(retorno.getString("lon"));
 
             System.out.println(eventGeolocalizacao.toString());
 

@@ -11,7 +11,7 @@ public class Imovel {
     @Id
     @GeneratedValue
     @Column(name = "imovel_id")
-    private Integer id;
+    private String id;
 
     @Column
     private String localidade;
@@ -22,11 +22,8 @@ public class Imovel {
     @Column
     private String complemento;
 
-    @Column
-    private String latitude;
-
-    @Column
-    private String longitude;
+    @Column(columnDefinition = "GEOMETRY(POINT, 4326)")
+    private String pontoGeografico;
 
     @Column
     private String bairro;

@@ -1,22 +1,22 @@
 package br.uem.geolocalizacao.rabbit;
 
 public class ImovelCreateEvent {
-    private Integer id;
+    private String id;
     private String query;
 
     public ImovelCreateEvent() {
     }
 
-    public ImovelCreateEvent(Integer id, String query) {
+    public ImovelCreateEvent(String id, String query) {
         this.id = id;
         this.query = query;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
